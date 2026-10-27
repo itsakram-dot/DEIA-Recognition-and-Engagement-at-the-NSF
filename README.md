@@ -23,3 +23,21 @@ flowchart LR
     AGI -->|"B = 0.70, R² = 0.52"| DEIA
     REC -->|"B = 1.01, R² = 0.62"| ENG
     AGI -->|"B = 0.85, R² = 0.70"| ENG
+
+## How to reproduce this analysis
+
+1. Download the 2023 FEVS public use file from [opm.gov/fevs](https://www.opm.gov/fevs/).
+2. Filter to `AGENCY == "NF"` (National Science Foundation). This yields the 1,070 responses used here.
+3. Convert "X" (Do Not Know) and "Y" (I do not have accessibility needs) to `NA`.
+4. Open `Project Code.qmd` in RStudio. Update the `read.csv()` path at the top to point to your filtered file.
+5. Knit the file to reproduce the regression tables and plots.
+
+The raw data is not included in this repo due to file size and privacy guidelines.
+
+## My role
+
+I took the lead on this project. I built the composite indices from the raw OPM items, wrote the R code for cleaning and modeling, and drafted the final report and recommendations. My teammates contributed to the literature review and the final presentation.
+
+## Data dictionary
+
+The full OPM codebook, mapping each question (Q1–Q91) to its survey text and index grouping, is available in the repository as `OPM Codebook Open in Excel.xlsx`.
