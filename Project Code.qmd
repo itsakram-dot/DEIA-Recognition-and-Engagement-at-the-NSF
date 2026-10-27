@@ -1,0 +1,259 @@
+---
+title: "Diversity Measures and Employee Engagement principles within the National Science Foundation"
+author: "Akram Mohammed, Josh Gella, Sergio Zamora"
+execute:
+  echo: false
+  message: false
+  warning: false
+format:
+  pdf:
+    documentclass: report
+    toc: true
+    embed-resources: true
+    geometry:
+      top=10mm
+    editor: visual
+editor_options: 
+  chunk_output_type: inline
+---
+
+This document serves as a template for you to work on your group project. This along with the rendered pdf file (which I will show you how to create) will be the final submission documents for your project. You will also have the slides and presentation. For many of you, it may be easier to copy the sections of this template into a Google Doc. Then paste the text-based portions back into this template before actually submitting the document. This document should include a mix of code and text.
+
+```{r, include=FALSE}
+# leave this here, it will not show up in your pdf report.
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, echo=FALSE)
+library(stargazer)
+library("coefplot")
+df_NSF <- read.csv("NSF OPM Data.csv")
+```
+
+# Executive Summary
+
+In our report, we have decided to look into the National Science Foundation to see what kind of effect does Recognition and Agile practices have on Diversity and Employee Engagement. Our data has been shown to be statistically significant while also proving that our hypotheses to be correct. Recognition in the science community is all what people strive for. Scientists want to be correct and acknowledged by their peers, but that acknowledgement felt to be very one sided since most recognition historically would go towards white males. We wanted to prove that recognition went hand and hand with not only employee engagement, but diversity as well which we believe to be true thanks to our test. Our test showed that the more employees were recognized, the more engaged they felt they were. With the results that included Diversity, the more employees were recognized, the more diverse the staff was. This could be that a more diverse staff is being retained or just more comfortable with identifying themselves on the survey. The other part of our test focused on Agile Practices. We believe that the implementation of said practices would also have a positive effect on diversity and employee engagement. When you break up projects and work evenly among staff, but also have the inputs of your diverse employees that could see things in different perspectives. We were able to prove that those things all had positive relationships with each other. We saw that Agile Practices had big effects on both Diversity and Engagement with very statistically significant data. With this data we have several recommendations to consider. 
+
+- Firstly, making sure we are not leaving anyone behind. When it comes to changes many older folk tend to be left behind and forgotten, so we need to make sure everyone is on the same page. 
+
+- Secondly, Making sure that Agile Practices lead to Recognition. When responsibilities get broken down to several people, it is easy to not recognize people for their hard work, since their part may seem small. So we need to make sure these practices do not backfire and give recognition where it seems fit. 
+
+- Lastly, Combining our efforts together. Promoting diversity is easy, but utilizing your diversity is difficult. So make collaborative efforts with a focus on diversity to not only boost engagement but also make a more cohesive team and environment.
+
+We hope you’re able to see what we see in the powers of Recognition and Agile Practices.
+
+# **Introduction**
+
+In this report, we will talk about how recognition of employees and agile practices will be a factor due to the Diversity, Equity, Inclusion, Accessibility, and Employee engagement of a workplace. We will be analyzing data taken from employees at the National Science Foundation (NSF). The NSF is an independent agency of the United States federal government that supports fundamental research and education in all the non-medical fields of science and engineering. We would like to shed light on the people who could be considered marginalized in the science field.
+
+# **Hypothesis and Research Questions**
+
+The purpose of this report is to answer a few questions and to prove our 2 hypotheses and answer 2 questions. 
+
+1.  We hypothesize that Recognizing employees will positively affect DEIA.
+
+    Recognition in the scientific community drives individuals to bring out their fullest potential, so we believe that it would also have a positive effect on DEIA.
+
+2.  We researched into how Recognition helps increase Employee Engagement.
+
+    When employees get recognized for their contributions and efforts they are more likely to want to work harder without being asked to do so. 
+
+3.  We hypothesise that Agile practices have an effect on DEIA? 
+
+    Agile practices could either have a positive or negative effect on DEIA since this could affect how people interact with one another and could also make people feel excluded if the practices weren’t implemented properly.
+
+4.  We researched on how implementation of Agile practices affect Employee Engagement?
+
+    In the perfect world Agile practices should increase employee engagement since the breakdown of responsibilities should make working on a project have a cleaner workflow.
+
+## Intrinsic Work Experience Between Agencies
+
+We assume as a reference group for the research and hypothesis questions that most staff employed within the National science foundation are white males. We are interested in this topic because we want to understand the diversity measures and employee engagement activities carried out at a government agency with so many highly educated individuals and scholars.
+
+We found that the National science foundation recognizes researchers, scientists, and their institutions for their contributions to advancing science, technology, and engineering (STEM). We will examine how “Recognition” efforts by the agency positively affects “Diversity” (Factors: Sex and Race). 
+
+**Hypothesis 1: Recognizing employees will positively affect DEIA.**
+
+We discovered that recognition by the National Science Foundation can be in the form of grants, awards, citations, and honors which the agency uses to serve as a means to promote further innovation in science and engineering. We want to research if the forms of recognition carried out by the agency has a positive effect on their employee engagement of their staff.
+
+**Research Question 1: Does Recognition positively affect Employee Engagement?**
+
+Agile practices at the National Science Foundation are approaches taken by the agency to aid research, collaboration and project management. These practices are put in place to be responsive to be adaptive and responsive to needs of the unique project being handled. We hypothesize that the implementation of these practices has a positive effect on Diversity. 
+
+**Hypothesis 2: How does the implementation of Agile practices affect DEIA ?**
+
+In recent years a big shift has been noted within agencies of the United states government, we saw that to be the case at the National science foundation as well. Agile practices within our chosen agency such as frequent communication and stakeholder meetings are being eased and moved online. These practices we’ve found in our research to be good for the agency, our research question wants to examine how the implementation of these practices affects Employee Engagement. 
+
+**Research Question 2: How does the implementation of Agile practices affect Employee Engagement ?**
+
+# Analyses
+
+**Hypothesis 1: Recognizing employees will positively affect DEIA:**
+
+The Table represents the significant variables \*\*\* and their level of impact on Recognition
+
+```{r}
+lm1 <- lm(formula = Recognition ~ Diversity + Race + Sex, data = df_NSF)
+stargazer(lm1, type = "text")
+```
+
+This Plots shows an estimation of the coefficients and plots their coefficient intervals.
+
+```{r}
+lm_model <- lm(Recognition ~ Diversity + Race + Sex, data = df_NSF)
+coefplot(lm_model)
+```
+
+This is a scatter plot depicting the effect Diversity has on Recognition within our agency.
+
+```{r}
+df_NSF_clean <- df_NSF[!is.na(df_NSF$Recognition), ]
+lm1 <- lm(Recognition ~ Diversity, data = df_NSF_clean)
+pred <- predict(lm1, newdata = df_NSF_clean)
+plot(pred, df_NSF_clean$Recognition,
+     xlab = "Predicted Recognition",
+     ylab = "Actual Recognition",
+     main = "Scatter Plot with Regression Line")
+abline(lm1, col = "red")
+```
+
+**Hypothesis 2: How does the implementation of Agile practices affect DEIA ?**
+
+A Table representing the significant variables \*\*\* and their level of impact on Agile.
+
+```{r}
+lm3 <- lm(`Agile` ~`Diversity`+`Race`+`Sex`, data = df_NSF)
+stargazer(lm3, type = "text")
+```
+
+## **Analytic Strategy**
+
+We used our Data frame df_NSF to conduct our statistical tests on our sampled data. We derived this data from the OPM data after filtering out for our specific agency and narrowing down our choice of variables based on our questions and hypothesis. We are interested in exploring the relationship between certain variables using a mix of hypothesis and research questions.
+
+Our hypothesis questions: Recognition Q17, Q35, Q69) will positively affect DEIA (Overall: Q73-Q85) ?
+
+Recognition (Goal Oriented: Recognition Q17, Q35, Q69) will positively affect Employee Engagement (Q2, Q3, Q4, Q6, Q7, Q57, Q58, Q59, Q61, Q62, Q48, Q50, Q51, Q52, Q54) ?
+
+Our research Questions: How does the implementation of Agile (Q13, Q14, Q27- Q31, Q42, Q64, Q65) practices affect DEIA (Overall: Q73-Q85) ?
+
+How does the implementation of Agile (Q13, Q14, Q27- Q31, Q42, Q64, Q65) practices affect Employee Engagement (Q2, Q3, Q4, Q6, Q7, Q57, Q58, Q59, Q61, Q62, Q48, Q50, Q51, Q52, Q54) ?
+
+We created two factors to help account for Diversity, categorical variables they are "Sex" and "Race", while also accounting for people who may not want to identify their race and sex. We computed a mean score for each of these columns in order to create variables within the data frame for Recognition, Agile and so for all variables.
+
+Our Descriptive statistics show the number of employees in each of our categories, as well as the mean and standard deviation of all of our variables. As we are interested in exploring the relationship between certain variables we felt regression analysis would be appropriate.
+
+**Brief summary of the analyses you conducted (e.g., computing descriptive statistics, conducting regression analyses, etc.). Be sure to justify your analysis strategy based on your hypotheses/research questions and the type of data you are working with**.
+
+## **Descriptive Statistics**
+
+The statistics below show the number of employees in each of our categories, and the ones who reported or chose not to in their respective demographic. Keeping in mind our assumption at the begging of this project was that most of our employees would be white males, the data shows that not to be true. The data also shows the mean and standard deviations of the Recognition, Diversity, Agile and Employee Engagement variables.
+
+```{r}
+demo_counts <- table(df_NSF$Race, df_NSF$Sex)
+demo_counts_not_reported <- sum(is.na(df_NSF$Race) | is.na(df_NSF$Sex))
+
+recog_mean <- mean(df_NSF$Recognition, na.rm = TRUE)
+recog_sd <- sd(df_NSF$Recognition, na.rm = TRUE)
+
+diverse_mean <- mean(df_NSF$Diversity, na.rm = TRUE)
+diverse_sd <- sd(df_NSF$Diversity, na.rm = TRUE)
+
+agile_mean <- mean(df_NSF$Agile, na.rm = TRUE)
+agile_sd <- sd(df_NSF$Agile, na.rm = TRUE)
+
+employee_engage_numeric <- as.numeric(df_NSF$Employee.Engagement)
+employee_engage_mean <- mean(employee_engage_numeric, na.rm = TRUE)
+employee_engage_sd <- sd(employee_engage_numeric, na.rm = TRUE)
+
+cat("Count of Employees by Demographic Groups:\n")
+print(demo_counts)
+cat("Count of Employees with Missing Demographic Information:", demo_counts_not_reported, "\n\n")
+
+cat("Descriptive Statistics of Variables:\n")
+cat("Recognition: Mean =", recog_mean, "  SD =", recog_sd, "\n")
+cat("Diversity: Mean =", diverse_mean, "  SD =", diverse_sd, "\n")
+cat("Agile: Mean =", agile_mean, "  SD =", agile_sd, "\n")
+cat("Employee Engagement: Mean =", employee_engage_mean, "  SD =", employee_engage_sd, "\n")
+```
+
+## **Results - Hypothesis & Research Question Evaluation**
+
+In this section there should be **both** chunks of code as well as written interpretation of what you are seeing in your data.
+
+**Hypothesis 1: Recognizing employees will positively affect DEIA:**
+
+We ran a this regression "**Recognition \~ Diversity + Race + Sex"** to explore our hypothesis that Recognition will have a positive effect on Diversity, and our two categorical factor variables in Sex and Race.
+
+```{r}
+lm1 <- lm(`Recognition` ~`Diversity`+`Race`+`Sex` , data=df_NSF)
+summary(lm1)
+```
+
+Our regression results indicate that the relationship between Diversity and Recognition to be positive and statistically significant at coefficient 0.896 (t = 34.36, p \<0.001). This shows evidence to agree with our hypothesis, the results illustrates that higher levels of Diversity is associated with higher levels of Recognition.
+
+Among our racial categories the results indicate that Black's or African Americans at a coefficient of 0.272 (t=4.426, p\< 0.001) indicating a positive effect on Recognition compared to our reference group. The coefficient for our other race variables Asian 0.242 (t=2.070, p = 0.041) and those who did not report had a coefficient of 0.227 (t=4.390, p = \<0.001) indicating a positive relationship between both variables and recognition compared to the our reference group. For the gender Sex female showed a positive relationship with Recognition with a coefficient of 0.026 (t=0.558, p \< 0.05). Those that did not report their gender did not have a significant relationship.
+
+The direction of our findings indicates evidence to support our initial hypothesis, our regression showed us that higher levels of Diversity is associated with higher levels of Recognition. Individuals within our agency who identify as Black or AA, Asian, and those who did not report all have higher levels of Recognition than our reference group. While Females reported a positive relationship compared to our reference group.
+
+The Effect Size this model has in explaining our predictor can be seen from the R squared of 0.5508 which is, approx 55.08% of the variability in Recognition can be explained by the predictors we included in our model. The Diversity variable has the standardized beta coefficient of 0.7286, and for the racial categories, they ranged from 0.0941 to 0.1080 compared to the reference group.
+
+Therefore we can collude that our model shows that within our agency, Diversity, Race and Sex have statistically significant relationships with Recognition. We also found that Diversity to be our strongest predictor. Within the context of our hypothesis question we have enough evidence to conclude that our null hypothesis is accepted. Recognizing employees will positively affect Diversity. We found our final model equation to be:
+
+$Recognition = -0.083 + 0.896 x Diversity + 0.0272 x RaceBlackorAA + 0.242 x RaceAsian + 0.227 x RaceDidNotReport + 0.259 x SexFemale - 0.130 x SexDidNotReport + Error$
+
+**Hypothesis 2: How does the implementation of Agile practices affect DEIA ?**
+
+We ran a this regression "**Agile \~ Diversity + Race + Sex"** to explore our hypothesis that Agile practices will have a positive effect on Diversity, and our two categorical factor variables in Sex and Race.
+
+```{r}
+lm3 <- lm(`Agile` ~`Diversity`+`Race`+`Sex`, data = df_NSF)
+summary(lm3)
+```
+
+Our regression results indicate that Diversity has a positive association with agile practices, indicated by the coefficient estimate of 0.697. The p and t statistic (t=32.521, p \> 2e16) also indicates a highly significant relationship. This indicates that higher levels of diversity are associated with higher levels of agile practices implementation.
+
+Among our Race categories Black or African American employees (β = 0.25050, p \< 0.001) or ot reported a race (β = 0.14845, p \< 0.001), and Asian employees (β = 0.01283, p = 0.041) is associated with higher levels of Agile practices compared to the refrence category. Which implies that promoting racial diversity and inclusiviness within the agency leads to higher levels of agile practices. While the coefficient for Sex (Female) is statistically significant (β = 0.07546, p \< 0.05), indicating a positive relationship with Agile practices, the coefficient for Sex (Did Not Report) is not statistically significant.
+
+The model fit can be seen from the adjusted R-squared value is 0.5182, indicating that approximately 51.82% of the variance in Agile practices can be explained by the predictors included in the model.
+
+Therefore we can conclude that the results of the regression analysis indicate that fostering diversity, promoting racial inclusiviness, and encouraging gender diversity within the organization are associated with higher levels of Agile practices implementation. Therefore, the implementation of Agile practices positively affects DEIA efforts by promoting diversity, equity, inclusion, and accessibility within our agency context.
+
+We found our final model equation to be:
+
+$Agile=0.17894+0.69682×Diversity+0.25050×Race (BlackorAA)+0.01283×Race (Asian)+0.14845×Race (DidNotReport)+0.07546×Sex (Female)−0.13032×Sex (DidNotReport)$
+
+**Research Question 1: Does Recognition positively affect Employee Engagement?**
+
+```{r}
+lm2 <- lm(Recognition ~ `Employee_Engagement`, data = df_NSF)
+summary(lm2)
+
+```
+
+In our regression it resulted with the relationship between Recognition and Employee engagement to have a positive effect while also being statistically significant (*B=* 1.01, *t=* 41.99, *P\<*0.01) The data shows that recognition has a big effect on Employee Engagement since the *R^2^*=0.623 which is a clear indicator of the effect.
+
+**Research Question 2: How does the implementation of Agile practices affect Employee Engagement ?**
+
+```{r}
+lm4 <- lm(`Agile` ~ `Employee_Engagement`, data = df_NSF)
+summary(lm4)
+```
+
+In our regression it resulted with the relationship between Agile Practices and Employee Engagement to have a positive effect while also being statistically significant (*B=* 0.84, *t=* 49.85, *P\<*0.01) The data shows that Agile practices has a big effect on Employee Engagement since the *R^2^*=0.699 which is a clear indicator of the effect.
+
+These results indicate that the relationship between Agile and Employee Engagement to be positive and statistically significant at coefficient 0.896 (t = 49.85, p \<0.001). This shows evidence to agree with our hypothesis, the results show that higher levels of Agile is associated with higher levels of Employee Engagement.
+
+# **Interpretation and Recommendations**
+
+From our findings, we can conclude that the factors we choose are significant. Whether it would be recognition, employee engagement, or implementation of agile practices, they all have an impact on DEIA. 
+
+The factors we have chosen to study have a substantial impact on Diversity, Equity, Inclusion, and Accessibility (DEIA) within an organization. Our research has found that investing in employee recognition programs, fostering employee engagement, and implementing agile practices can lead to a more diverse, equitable, inclusive, and accessible workplace culture. By recognizing and rewarding employees for their contributions, organizations can create a sense of belonging, which is important for fostering a positive and inclusive environment. Similarly, by engaging employees in decision-making processes and valuing their opinions, companies can promote diversity of thought and ensure that everyone's perspective is heard. Finally, by adopting agile practices, organizations can promote flexibility, adaptability, and innovation, which are essential for creating an inclusive workplace culture that values diversity and promotes equity and accessibility for all employees.
+
+## **Recommendation 1: Look Into Age and How It Affects Engagement**
+
+With good agile practices, we want the employees to be able to navigate through projects on their own without the need of management having to manage much. When making new changes it’s typically the older employees who do not do well with change especially if the procedures were something they have been doing for several years. We would need to make sure that we implement the new procedures in a way so they are easily understood throughout the organization and all ages. We would want to make sure we get the feedback of the employees with lower engagement levels so we can make changes that would increase efficiency throughout all age groups. This will also make sure we are keeping up with our Diversity since we would not want to make the older employees feel excluded.
+
+## **Recommendation 2: Agile Practices Lead To Recognition**
+
+Recognition is an essential aspect of any organization's success. It has been found that recognition has a positive effect on all the races we reviewed. This includes not only monetary rewards but also verbal and written recognition for employees' hard work and achievements. Agile practices are important for ensuring that employees can work effectively and efficiently to gain recognition. Per analysis, recognition has a positive effect on all the races we reviewed. If agile practices were not implemented would that negatively impact employee recognition. Without agile practices, employees may struggle to work collaboratively and efficiently, leading to decreased productivity and morale. This, in turn, can negatively impact employee recognition, as employees may feel undervalued and unappreciated. We would like to see these practices allow employees to work effectively and efficiently to gain recognition in their hard work.
+
+## **Recommendation 3:  Diverse Collaborative Work Result In Employee Engagement**
+
+The success of a workplace is heavily influenced by the quality of interpersonal interactions among employees. In particular, fostering positive relationships and promoting collaboration within racially diverse teams can significantly enhance employee engagement levels. However, a single instance of racial bias or discrimination during these interactions can have a devastating effect on trust and morale. What would be the result of employee engagement when teams are diverse? Would employee engagement and productivity be higher due to differing perspectives? We would like to gather information on the employees with lower engagement levels so we can make changes that would increase engagement throughout diverse working groups.
